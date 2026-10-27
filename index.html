@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101710">
+<title>FussballCoach</title>
+<style>
+:root{--bg:#101710;--panel:#1b261d;--green:#b9ff66;--muted:#a6b4a4;--line:#344334}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#f5f8f3;font-family:system-ui,Arial,sans-serif}
+header{padding:24px 18px 18px;background:linear-gradient(140deg,#263e26,#101710)}
+.logo{color:var(--green);font-weight:900;letter-spacing:1px}
+h1{font-size:30px;margin:14px 0 5px}
+p{line-height:1.5}
+.muted{color:var(--muted)}
+main{padding:16px;max-width:760px;margin:auto;padding-bottom:95px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:17px;margin:12px 0}
+.hero{background:linear-gradient(135deg,#274b25,#17251a)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:#111c12;padding:12px 5px;border-radius:12px;text-align:center}
+.stat strong{display:block;color:var(--green);font-size:22px}
+button{border:0;border-radius:12px;padding:12px 15px;background:var(--green);color:#13200f;font-size:15px;font-weight:800;cursor:pointer}
+button.secondary{background:#30402f;color:white;border:1px solid #50634e}
+button:focus-visible{outline:3px solid white}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-block;background:#30472c;color:var(--green);padding:5px 9px;border-radius:20px;font-size:12px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#172118;border-top:1px solid var(--line);padding:10px 3px calc(10px + env(safe-area-inset-bottom));z-index:2}
+nav button{background:transparent;color:#dce7d9;padding:8px 5px;font-size:12px}
+nav button.active{color:var(--green)}
+.answer{display:block;width:100%;text-align:left;margin:9px 0}
+.hidden{display:none}
+.progress{height:9px;border-radius:9px;background:#354335;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:var(--green)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">⚽ FUSSBALLCOACH</div>
+  <h1>Werde jeden Tag besser.</h1>
+  <p class="muted">Trainiere deinen Körper. Schärfe deinen Kopf. Liebe das Spiel.</p>
+  <span class="pill">DEIN PERSÖNLICHER COACH</span>
+</header>
+<main>
+<section id="home">
+ <div class="card hero">
+  <span class="pill">DEIN HEUTIGES TRAINING</span>
+  <h2>Dein nächster Schritt beginnt jetzt.</h2>
+  <p>Starte mit einer Übung oder teste dein Fussballwissen.</p>
+  <div class="actions">
+   <button onclick="show('training')">Training starten ⚽</button>
+   <button class="secondary" onclick="show('quiz')">Quiz spielen 🧠</button>
+  </div>
+ </div>
+ <div class="card">
+  <h3>🏆 Dein Fortschritt</h3>
+  <div class="stats">
+   <div class="stat"><strong id="xp">0</strong><span>XP</span></div>
+   <div class="stat"><strong id="level">1</strong><span>Level</span></div>
+   <div class="stat"><strong id="done">0</strong><span>Aufgaben</span></div>
+  </div>
+  <p class="muted" id="leveltext">Starte deine erste Herausforderung!</p>
+  <div class="progress"><span id="bar"></span></div>
+ </div>
+ <div class="card">
+  <h3>🎯 Coach-Tipp des Tages</h3>
+  <p>Qualität vor Tempo: Übe Ballkontrolle zunächst langsam und steigere erst dann die Geschwindigkeit.</p>
+ </div>
+ <div class="card">
+  <h3>📅 Deine Mission</h3>
+  <p>Schließe heute eine Trainingseinheit und ein Quiz ab.</p>
+ </div>
+</section>
+
+<section id="training" class="hidden">
+ <h2>⚽ Trainingsplatz</h2>
+ <p class="muted">Wähle eine Übung. Du brauchst nur einen sicheren Platz und, wenn vorhanden, einen Ball.</p>
+ <div class="card">
+  <span class="pill">TECHNIK · 10 MIN</span>
+  <h3>Ballgefühl</h3>
+  <p>Berühre den Ball abwechselnd sanft mit dem rechten und linken Fuß. Halte ihn nah bei dir und schau zwischendurch nach vorne.</p>
+  <p><b>Aufgabe:</b> Übe in deinem eigenen Tempo und achte auf kontrollierte Kontakte. Mach Pausen, wenn du sie brauchst.</p>
+  <button onclick="complete('Ballgefühl')">Übung abgeschlossen +20 XP</button>
+ </div>
+ <div class="card">
+  <span class="pill">PASSEN · 10 MIN</span>
+  <h3>Präzise Pässe</h3>
+  <p>Spiele aus kurzer Entfernung gegen eine sichere Wand oder mit einer Trainingsperson. Nutze möglichst die Innenseite des Fußes.</p>
+  <p><b>Coach-Tipp:</b> Stelle deinen Standfuß neben den Ball und richte ihn zum Ziel aus.</p>
+  <button onclick="complete('Präzise Pässe')">Übung abgeschlossen +20 XP</button>
+ </div>
+ <div class="card">
+  <span class="pill">TAKTIK · 5 MIN</span>
+  <h3>Vor dem Pass schauen</h3>
+  <p>Stell dir vor, du bekommst einen Pass. Überlege zuerst: Wo stehen Mitspieler und Gegner? Welche zwei Passwege könntest du nutzen?</p>
+  <button onclick="complete('Vororientierung')">Übung abgeschlossen +20 XP</button>
+ </div>
+</section>
+
+<section id="quiz" class="hidden">
+ <h2>🧠 Fussball-Quiz</h2>
+ <div class="card">
+  <span class="pill" id="qcount">FRAGE 1</span>
+  <h3 id="question">Wie viele Spieler einer Mannschaft stehen zu Spielbeginn regulär auf dem Feld?</h3>
+  <div id="answers"></div>
+  <p id="feedback" aria-live="polite" class="muted"></p>
+  <button id="next" class="hidden" onclick="nextQuestion()">Nächste Frage →</button>
+ </div>
+</section>
+
+<section id="progress" class="hidden">
+ <h2>📈 Deine Entwicklung</h2>
+ <div class="card">
+  <h3>Deine Statistik</h3>
+  <p>Gesammelte XP: <b id="pxp">0</b></p>
+  <p>Abgeschlossene Aufgaben: <b id="pdone">0</b></p>
+  <p>Dein Level: <b id="plevel">1</b></p>
+  <p class="muted">Dein Fortschritt wird in diesem Browser gespeichert.</p>
+ </div>
+ <div class="card">
+  <h3>💡 Dein Coach erinnert dich</h3>
+  <p>Regelmäßiges, sicheres Üben und gute Entscheidungen sind wichtiger als möglichst viele Wiederholungen.</p>
+  <button class="secondary" onclick="if(confirm('Möchtest du wirklich deinen gesamten Fortschritt zurücksetzen?')){localStorage.removeItem('fc-progress');location.reload()}">Fortschritt zurücksetzen</button>
+ </div>
+</section>
+</main>
+<nav>
+ <button class="active" data-page="home" onclick="show('home')">🏠<br>Start</button>
+ <button data-page="training" onclick="show('training')">⚽<br>Training</button>
+ <button data-page="quiz" onclick="show('quiz')">🧠<br>Quiz</button>
+ <button data-page="progress" onclick="show('progress')">📈<br>Fortschritt</button>
+</nav>
+<script>
+const defaultState={xp:0,done:[],answered:[]};
+let state;
+try{state=JSON.parse(localStorage.getItem('fc-progress'))||defaultState}
+catch(e){state=defaultState}
+function save(){localStorage.setItem('fc-progress',JSON.stringify(state));update()}
+function update(){
+ const xp=state.xp||0,level=Math.floor(xp/100)+1;
+ ['xp','pxp'].forEach(id=>document.getElementById(id).textContent=xp);
+ ['done','pdone'].forEach(id=>document.getElementById(id).textContent=state.done.length);
+ ['level','plevel'].forEach(id=>document.getElementById(id).textContent=level);
+ document.getElementById('bar').style.width=(xp%100)+'%';
+ document.getElementById('leveltext').textContent=(100-xp%100)+' XP bis zum nächsten Level';
+}
+function show(id){
+ document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+ if(id==='progress')update();
+ window.scrollTo(0,0);
+}
+function complete(name){
+ if(state.done.includes(name)){alert('Diese Übung hast du bereits abgeschlossen.');return}
+ state.done.push(name);state.xp+=20;save();alert('Stark! +20 XP. Weiter so!');
+}
+const questions=[
+ {q:'Wie viele Spieler einer Mannschaft stehen regulär gleichzeitig auf dem Feld?',a:['9','10','11','12'],c:2,why:'Eine Mannschaft spielt regulär mit elf Spielern, einschließlich Torwart.'},
+ {q:'Wie heißt es, wenn ein Spieler den Ball regelwidrig mit der Hand spielt?',a:['Einwurf','Handspiel','Abstoß','Eckball'],c:1,why:'Das regelwidrige Spielen des Balls mit Hand oder Arm wird als Handspiel gewertet; es gibt Ausnahmen in den Regeln.'},
+ {q:'Wie lange dauert ein reguläres Fussballspiel ohne Nachspielzeit und Verlängerung?',a:['60 Minuten','80 Minuten','90 Minuten','100 Minuten'],c:2,why:'Die reguläre Spielzeit besteht aus zwei Halbzeiten von je 45 Minuten.'},
+ {q:'Was bedeutet ein Hattrick im Fussball üblicherweise?',a:['Drei Tore eines Spielers in einem Spiel','Drei gewonnene Eckbälle','Drei gelbe Karten eines Teams','Drei Auswechslungen'],c:0,why:'Ein Hattrick bezeichnet üblicherweise drei Tore desselben Spielers in einem Spiel.'},
+ {q:'Von wo wird ein Eckstoß ausgeführt?',a:['Von der Mittellinie','Aus dem Strafraum','Aus dem Eckbereich','Vom Elfmeterpunkt'],c:2,why:'Der Eckstoß wird aus dem Eckbereich des Spielfelds ausgeführt.'}
+];
+let qi=0,locked=false;
+function renderQuestion(){
+ locked=false;let q=questions[qi];
+ document.getElementById('qcount').textContent='FRAGE '+(qi+1)+' VON '+questions.length;
+ document.getElementById('question').textContent=q.q;
+ document.getElementById('feedback').textContent='';
+ document.getElementById('next').classList.add('hidden');
+ const box=document.getElementById('answers');box.innerHTML='';
+ q.a.forEach((a,i)=>{
+  const b=document.createElement('button');b.className='answer secondary';b.textContent=a;
+  b.onclick=()=>answer(i);box.appendChild(b);
+ });
+}
+function answer(i){
+ if(locked)return;locked=true;const q=questions[qi];
+ const right=i===q.c;
+ document.getElementById('feedback').textContent=(right?'Richtig! +10 XP. ':'Noch nicht. ')+q.why;
+ document.querySelectorAll('#answers button').forEach(b=>b.disabled=true);
+ if(right&&!state.answered.includes(qi)){state.answered.push(qi);state.xp+=10;save()}
+ document.getElementById('next').classList.remove('hidden');
+}
+function nextQuestion(){qi=(qi+1)%questions.length;renderQuestion()}
+renderQuestion();update();
+</script>
+</body>
+</html>
